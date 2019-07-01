@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title><%= content_for?(:html_title) ? yield(:html_title) : "Creator’s Book" %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+    <div class="loading" style="display: none;">
+      <div class="animation">TODO:Loadong...</div>
+    </div>
+    <nav class="navbar navbar-expand-lg">
+      <a class="navbar-brand" href="#">
+        <span class="admin_logo">Logo Image</span>
+      </a>
+      <% if @current_user != nil %>
+        <div class="collapse navbar-collapse">
+          <%= form_tag("/admin/logout", method: "post", class: "form-inline my-2 my-lg-0 ml-auto")  do %>
+            <button type="submit" class="btn-logout btn btn-link">ログアウト</button>
+          <% end %>
+        </div>
+      <% end %>
+    </nav>
+
+    <% if @current_user != nil %>
+      <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+          <div class="col-2 bd-sidebar">
+            <ul class="list-group list-group-flush">
+              <% if @current_user.role != Settings.role_value.editor %>
+                <li class="list-group-item">
+                  <a class="bd-toc-link" href="/admin/company">企業一覧</a>
+                </li>
+                <li class="list-group-item">
+                  <a class="bd-toc-link" href="/admin/account">アカウント一覧</a>
+                </li>
+              <% end %>
+              <li class="list-group-item">
+                <a class="bd-toc-link" href="/admin/creator">クリエイター一覧</a>
+              </li>
+            </ul>
+          </div>
+          <main class="col-9 py-md-3 pl-md-5 bd-content">
+            <% if flash[:notice] %>
+              <pre class="p-3 mb-2 text-white bg-info bg-messege"><%= notice %></pre>
+            <% end %>
+            <% if flash[:alert] %>
+              <pre class="p-3 mb-2 text-white bg-danger bg-messege"><%= alert %></pre>
+            <% end %>
+            <%= yield %>
+          </main>
+        </div>
+      </div>
+    <% end %>
+  </body>
+</html>
