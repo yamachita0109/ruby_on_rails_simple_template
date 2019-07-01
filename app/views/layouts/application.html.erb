@@ -12,27 +12,65 @@
     <div class="loading" style="display: none;">
       <div class="animation">TODO:Loadong...</div>
     </div>
-    <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#">
-        <span class="admin_logo">Logo Image</span>
-      </a>
-      <% if @current_user.present? %>
-        <div class="collapse navbar-collapse">
-          <%= form_tag("/admin/logout", method: "post", class: "form-inline my-2 my-lg-0 ml-auto")  do %>
-            <button type="submit" class="btn-logout btn btn-link">ログアウト</button>
-          <% end %>
-        </div>
-      <% end %>
-    </nav>
 
-    <% if !@current_user.present? %>
-      <% if flash[:notice] %>
-        <p class="p-3 mb-2 text-white bg-info"><%= notice %></p>
+    <!-- mode normal -->
+    <% if @view_code == "normal" %>
+      <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">
+          <span class="logo">Logo Image</span>
+        </a>
+        <% if @current_user.present? %>
+          <div class="collapse navbar-collapse">
+            <%= form_tag("/logout", method: "post", class: "form-inline my-2 my-lg-0 ml-auto")  do %>
+              <button type="submit" class="btn-logout btn btn-link">ログアウト</button>
+            <% end %>
+          </div>
+        <% end %>
+      </nav>
+
+      <% if !@current_user.present? %>
+        <% if flash[:notice] %>
+          <p class="p-3 mb-2 text-white bg-info"><%= notice %></p>
+        <% end %>
+        <% if flash[:alert] %>
+          <p class="p-3 mb-2 text-white bg-danger"><%= alert %></p>
+        <% end %>
+        <%= yield %>
       <% end %>
-      <% if flash[:alert] %>
-        <p class="p-3 mb-2 text-white bg-danger"><%= alert %></p>
-      <% end %>
-      <%= yield %>
+    <% end %>
+
+    <!-- mode side -->
+    <% if @view_code == "side" %>
+      <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+          <!-- side bar -->
+          <div class="col-2 bd-sidebar">
+            <div class="logo">
+              Logo Image
+            </div>
+            <div class="side-form">
+              <label class="under blue-5">キーワード</label>
+              <div class="row">
+                <div class="col-8">
+                  <%= text_field_tag :text1, '', class: "form-control "%>
+                </div>
+                <div class="col-4">
+                  <button class="btn btn-primary btn-sm form-control" type="submit">検索</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <main class="col-9 py-md-3 pl-md-5 bd-content">
+            <% if flash[:notice] %>
+              <pre class="p-3 mb-2 text-white bg-info bg-messege"><%= notice %></pre>
+            <% end %>
+            <% if flash[:alert] %>
+              <pre class="p-3 mb-2 text-white bg-danger bg-messege"><%= alert %></pre>
+            <% end %>
+            <%= yield %>
+          </main>
+        </div>
+      </div>
     <% end %>
 
   </body>

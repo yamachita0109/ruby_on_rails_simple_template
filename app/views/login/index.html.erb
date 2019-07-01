@@ -5,7 +5,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h6 class="card-title text-center">ログイン</h6>
-            <%= form_tag("/login", method: "post")  do %>
+            <%= form_tag("/" + @company_id + "/login", method: "post")  do %>
               <div class="form-group">
                 <label for="inputEmail">メールアドレス</label>
                 <input type="email" class="form-control" name="mail">

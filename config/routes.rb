@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
-  get    '/login'   => 'login#index'
-  post   '/login'   => 'login#auth'
+  # login
+  get    '/:company_id/login'   => 'login#index'
+  post   '/:company_id/login'   => 'login#auth'
+
+  # home
+  get    '/:company_id/home'    => 'home#index'
 end
